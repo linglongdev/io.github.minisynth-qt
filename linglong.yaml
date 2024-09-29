@@ -1,0 +1,30 @@
+version: "1"
+
+package:
+  id: io.github.minisynth-qt
+  name: minisynth-qt
+  version: 1.0.1.1
+  kind: app
+  description: |
+    Minimalist Music Synthesizer for Qt
+
+command:
+  - /opt/apps/io.github.minisynth-qt/files/bin/minisynth-qt
+
+base: org.deepin.foundation/23.0.0
+runtime: org.deepin.Runtime/23.0.1
+
+sources:
+  - kind: git
+    url: https://github.com/pedrolcl/minisynth-qt.git
+    version: master
+    commit: fa727e740b030586f70ab0896d831e32012a473e
+
+build: |
+  cd /project/linglong/sources/minisynth-qt.git
+  git apply ../../../0001-install.patch
+  mkdir -p build
+  cd build
+  cmake .. \
+        -DCMAKE_INSTALL_PREFIX=${PREFIX}
+  cmake --build . --target install -j$(nproc --all)
